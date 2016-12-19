@@ -31,14 +31,14 @@ def main():
             GPIO.output(12, GPIO.HIGH)
             GPIO.output(11, 0)
             GPIO.output(15, True)
-            GPIO.output([16, 18], GPIO.HIGH)
+            GPIO.output([16, 18], not GPIO.input(16))
             GPIO.output((8, 10), [GPIO.HIGH, GPIO.LOW])
             time.sleep(1)
 
             GPIO.output(12, GPIO.LOW)
             GPIO.output(11, 1)
             GPIO.output(15, False)
-            GPIO.output((16, 18), GPIO.LOW)
+            GPIO.output((16, 18), not GPIO.input(16))
             GPIO.output([8, 10], (GPIO.LOW, GPIO.HIGH))
             time.sleep(1)
     finally:

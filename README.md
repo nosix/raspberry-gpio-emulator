@@ -44,7 +44,11 @@ pull_up_down:
 
 # Usage
 
+Documentation of raspberry-gpio-python:
 - [RPi.GPIO module basics](https://sourceforge.net/p/raspberry-gpio-python/wiki/BasicUsage/)
+- [GPIO Outputs](https://sourceforge.net/p/raspberry-gpio-python/wiki/Outputs/)
+
+Sample code:
 - [sample_board.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_board.py)
 - [sample_bcm.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_bcm.py)
 

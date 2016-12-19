@@ -178,8 +178,6 @@ def input(channel):
 
     pin = __pins_dict[channel]
 
-    assert pin.mode == "IN", 'GPIO must be setup as IN'
-
     return pin.is_on
 
 
