@@ -116,7 +116,7 @@ def setup(channel, state, initial=-1, pull_up_down=-1):
 
 @type_assert(int, int)
 def output(channel, outmode):
-    # type: (int, int) -> None
+    # type: (int, int or bool) -> None
     __check_mode()
 
     channel = __to_channel(channel)
@@ -124,6 +124,9 @@ def output(channel, outmode):
     __check_channel(channel)
 
     pin = __pins_dict[channel]
+
+    if isinstance(outmode, bool):
+        outmode = HIGH if outmode else LOW
 
     assert pin.mode == 'OUT', 'GPIO must be setup as OUT'
     assert outmode in [LOW, HIGH], 'Output must be set to HIGH/LOW'

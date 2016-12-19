@@ -10,13 +10,16 @@ def main():
         GPIO.setup(12, GPIO.OUT)
         GPIO.setup(11, GPIO.OUT, initial=GPIO.HIGH)
         GPIO.setup(13, GPIO.IN)
+        GPIO.setup(16, GPIO.OUT)
 
         while True:
             GPIO.output(12, GPIO.HIGH)
-            GPIO.output(11, GPIO.LOW)
+            GPIO.output(11, 0)
+            GPIO.output(16, True)
             time.sleep(1)
             GPIO.output(12, GPIO.LOW)
-            GPIO.output(11, GPIO.HIGH)
+            GPIO.output(11, 1)
+            GPIO.output(16, False)
             time.sleep(1)
     finally:
         GPIO.cleanup()
