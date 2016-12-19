@@ -15,6 +15,15 @@ def main():
         GPIO.setup((14, 15), GPIO.OUT)
         GPIO.setup([9, 10], GPIO.IN)
 
+        GPIO.setup(2, GPIO.IN)
+        GPIO.cleanup(2)
+
+        GPIO.setup([3, 4], GPIO.OUT)
+        GPIO.cleanup([3, 4])
+
+        GPIO.setup([3, 4], GPIO.IN)
+        GPIO.cleanup((3, 4))
+
         while True:
             GPIO.output(18, GPIO.HIGH)
             GPIO.output(17, 0)

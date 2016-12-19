@@ -25,9 +25,9 @@ class UI:
         # type: (int, bool) -> None
         self.__pipe.write_bytes([Pipe.CMD_CHANGE_GPIO_IN, channel, 1 if is_on else 0])
 
-    def cleanup(self):
-        # type: () -> None
-        self.__pipe.write_bytes([Pipe.CMD_CLEANUP])
+    def cleanup(self, channel):
+        # type: (int) -> None
+        self.__pipe.write_bytes([Pipe.CMD_CLEANUP, channel])
 
     def update(self, callback):
         buf = bytearray()

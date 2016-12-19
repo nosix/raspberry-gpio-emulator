@@ -146,8 +146,10 @@ class UI:
         # type: (bytearray) -> None
         cmd = buf.pop(0)
         if cmd == Pipe.CMD_CLEANUP:
-            print("UIServer::cleanup()")
-            self.cleanup()
+            channel = buf.pop(0)
+            # TODO: if channel can't get, push back to buffer.
+            _logger.debug("cleanup(%d)" % channel)
+            self.cleanup(channel)
         else:
             channel = buf.pop(0)
             is_on = buf.pop(0)
@@ -193,13 +195,13 @@ class UI:
             if change_relief:
                 btn.configure(relief=SUNKEN)
 
-    def cleanup(self):
-        # type: () -> None
-        for channel, btn in self.__gpio_btn_dict.items():
-            btn.configure(fg=UI.COLOR_DISABLE)
-            btn.configure(relief=FLAT)
-            btn.bind('<Button-1>', lambda e: None)
-            self.__set_text(btn, channel)
+    def cleanup(self, channel):
+        # type: (int) -> None
+        btn = self.__gpio_btn_dict[channel]
+        btn.configure(fg=UI.COLOR_DISABLE)
+        btn.configure(relief=FLAT)
+        btn.bind('<Button-1>', lambda e: None)
+        self.__set_text(btn, channel)
 
     def change_gpio_out(self, channel, is_on):
         # type: (int, bool) -> None

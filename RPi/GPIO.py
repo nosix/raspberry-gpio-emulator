@@ -70,9 +70,8 @@ def __change_gpio_in(channel):
 
 def setmode(mode):
     # type: (int) -> None
-    if mode in [BOARD, BCM]:
-        global __setmode
-        __setmode = mode
+    global __setmode
+    __setmode = mode
 
 
 def setwarnings(flag):
@@ -177,10 +176,25 @@ def input(channel):
     return pin.is_on
 
 
-def cleanup():
-    # type: () -> None
-    global __setmode
+def cleanup(channel=None):
+    # type: (int or Sequence[int]) -> None
+
+    if channel is None:
+        for c in __GPIO_names:
+            __cleanup(c)
+    elif isinstance(channel, Sequence):
+        for c in channel:
+            __cleanup(c)
+    else:
+        __cleanup(channel)
+
+
+def __cleanup(channel):
+    # type: (int) -> None
+
     global __pins_dict
-    __setmode = 0
-    __pins_dict.clear()
-    ui.cleanup()
+
+    channel = __to_channel(channel)
+
+    del __pins_dict[channel]
+    ui.cleanup(channel)
