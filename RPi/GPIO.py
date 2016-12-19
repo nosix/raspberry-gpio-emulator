@@ -1,7 +1,19 @@
 from collections import Sequence
 
+from . import __version__
 from .PIN import PIN
 from .launcher import ui
+
+VERSION = __version__
+
+RPI_INFO = {
+    'MANUFACTURER': 'Sony',
+    'P1_REVISION': 3,
+    'REVISION': '900092',
+    'PROCESSOR': 'BCM2835',
+    'RAM': '512M',
+    'TYPE': 'Zero'
+}
 
 LOW = 0
 HIGH = 1
@@ -85,17 +97,15 @@ def setup(channel, state, initial=-1, pull_up_down=-1):
 
     if isinstance(channel, Sequence):
         for c in channel:
-            __setup(c, state, initial, pull_up_down)
+            __setup(__to_channel(c), state, initial, pull_up_down)
     else:
-        __setup(channel, state, initial, pull_up_down)
+        __setup(__to_channel(channel), state, initial, pull_up_down)
 
 
 def __setup(channel, state, initial=-1, pull_up_down=-1):
     # type: (int, int, int, int) -> None
 
     global __pins_dict
-
-    channel = __to_channel(channel)
 
     assert channel in __GPIO_names, 'GPIO %d does not exist' % channel
     assert channel not in __pins_dict, 'GPIO is already setup'
@@ -135,16 +145,13 @@ def output(channel, outmode):
                 return zip(channel, [outmode] * len(channel))
 
         for (c, m) in zip_outmode():
-            __output(c, m)
+            __output(__to_channel(c), m)
     else:
-        __output(channel, outmode)
+        __output(__to_channel(channel), outmode)
 
 
 def __output(channel, outmode):
     # type: (int, int or bool) -> None
-
-    channel = __to_channel(channel)
-
     __check_channel(channel)
 
     pin = __pins_dict[channel]
@@ -184,17 +191,16 @@ def cleanup(channel=None):
             __cleanup(c)
     elif isinstance(channel, Sequence):
         for c in channel:
-            __cleanup(c)
+            __cleanup(__to_channel(c))
     else:
-        __cleanup(channel)
+        __cleanup(__to_channel(channel))
 
 
 def __cleanup(channel):
     # type: (int) -> None
+    __check_channel(channel)
 
     global __pins_dict
-
-    channel = __to_channel(channel)
 
     del __pins_dict[channel]
     ui.cleanup(channel)

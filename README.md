@@ -44,7 +44,9 @@ pull_up_down:
 
 # Usage
 
-See [sample.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample.py)
+- [RPi.GPIO module basics](https://sourceforge.net/p/raspberry-gpio-python/wiki/BasicUsage/)
+- [sample_board.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_board.py)
+- [sample_bcm.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_bcm.py)
 
 # Credit
 

@@ -3,6 +3,9 @@ def main():
     import time
 
     try:
+        print(GPIO.VERSION)
+        print(GPIO.RPI_INFO)
+
         GPIO.setmode(GPIO.BOARD)
 
         GPIO.setwarnings(False)
