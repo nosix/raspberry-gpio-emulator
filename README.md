@@ -18,29 +18,22 @@ $ pip install git+https://github.com/nosix/raspberry-gpio-emulator/
 import RPi.GPIO as GPIO
 ```
 
-function:
 - GPIO.setmode(mode)
+    - mode : GPIO.BOARD or GPIO.BCP
 - GPIO.setwarnings(flag)
+    - flag : bool
 - GPIO.setup(channel, state, initial, pull_up_down)
+    - channel : int or Sequence[int]
+    - state : GPIO.OUT or GPIO.IN
+    - initial : GPIO.LOW or GPIO.HIGH (option)
+    - pull_up_down : GPIO.PUD_OFF, GPIO.PUD_DOWN or GPIO.PUD_UP (option)
 - GPIO.output(channel, outmode)
+    - channel : int or Sequence[int]
+    - outmode : GPIO.LOW, GPIO.HIGH or Sequence[GPIO.LOW or GPIO.HIGH]
 - GPIO.input(channel)
-- GPIO.cleanup()
-
-mode:
-- GPIO.BCP
-
-state:
-- GPIO.OUT
-- GPIO.IN
-
-initial, outmode:
-- GPIO.LOW
-- GPIO.HIGH
-
-pull_up_down:
-- GPIO.PUD_OFF
-- GPIO.PUD_DOWN
-- GPIO.PUD_UP
+    - channel : int
+- GPIO.cleanup(channel)
+    - channel : int or Sequence[int] (option)
 
 # Usage
 
