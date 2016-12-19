@@ -9,7 +9,7 @@ RPi.GPIO emulator
 # Install
 
 ```bash
-$ pip install git+https://nosix.github.io/raspberry-gpio-emulator/
+$ pip install git+https://github.com/nosix/raspberry-gpio-emulator/
 ```
 
 # API
