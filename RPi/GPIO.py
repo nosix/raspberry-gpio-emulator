@@ -196,7 +196,6 @@ def cleanup(channel=None):
 
 def __cleanup(channel):
     # type: (int) -> None
-    __check_channel(channel)
 
     global __pins_dict
 
