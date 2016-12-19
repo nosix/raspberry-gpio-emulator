@@ -4,28 +4,60 @@ from .launcher import ui
 
 LOW = 0
 HIGH = 1
-OUT = 2
-IN = 3
-PUD_OFF = 4
-PUD_DOWN = 5
-PUD_UP = 6
-BCM = 7
 
-__GPIO_names = {
-    2, 3, 4, 17, 27, 22, 10, 9, 11, 5, 6, 13, 19, 26,
-    14, 15, 18, 23, 24, 25, 8, 7, 12, 16, 20, 21}
+OUT = 0
+IN = 1
 
-__setmode_done = False
+BOARD = 10
+BCM = 11
+
+PUD_OFF = 20
+PUD_UP = 21
+PUD_DOWN = 22
+
+# 0 is GND, 3V3, 5V or ID_SC
+__PINs = [
+    0, 0,
+    2, 0,
+    3, 0,
+    4, 14,
+    0, 15,
+    17, 18,
+    27, 0,
+    22, 23,
+    0, 24,
+    10, 0,
+    9, 25,
+    11, 8,
+    0, 7,
+    0, 0,
+    5, 0,
+    6, 12,
+    13, 0,
+    19, 16,
+    26, 20,
+    0, 21
+]
+
+__GPIO_names = set(__PINs)
+__GPIO_names.remove(0)
+
+__setmode = 0
 __pins_dict = {}
 
 
 def __check_mode():
-    assert __setmode_done, 'Setup your GPIO mode. Must be set to BCM'
+    assert __setmode in [BOARD, BCM], 'Setup your GPIO mode. Must be set to BOARD or BCM'
 
 
 def __check_channel(channel):
     # type: (int) -> None
     assert channel in __pins_dict, 'GPIO must be setup before used'
+
+
+def __to_channel(channel_or_pin):
+    # type: (int) -> int
+    return __PINs[channel_or_pin - 1] if __setmode == BOARD else channel_or_pin
 
 
 def __change_gpio_in(channel):
@@ -38,9 +70,9 @@ def __change_gpio_in(channel):
 @type_assert(int)
 def setmode(mode):
     # type: (int) -> None
-    if mode == BCM:
-        global __setmode_done
-        __setmode_done = True
+    if mode in [BOARD, BCM]:
+        global __setmode
+        __setmode = mode
 
 
 @type_assert(bool)
@@ -55,6 +87,8 @@ def setup(channel, state, initial=-1, pull_up_down=-1):
     __check_mode()
 
     global __pins_dict
+
+    channel = __to_channel(channel)
 
     assert channel in __GPIO_names, 'GPIO %d does not exist' % channel
     assert channel not in __pins_dict, 'GPIO is already setup'
@@ -84,6 +118,9 @@ def setup(channel, state, initial=-1, pull_up_down=-1):
 def output(channel, outmode):
     # type: (int, int) -> None
     __check_mode()
+
+    channel = __to_channel(channel)
+
     __check_channel(channel)
 
     pin = __pins_dict[channel]
@@ -99,6 +136,9 @@ def output(channel, outmode):
 def input(channel):
     # type: (int) -> bool
     __check_mode()
+
+    channel = __to_channel(channel)
+
     __check_channel(channel)
 
     ui.update(__change_gpio_in)
@@ -113,8 +153,8 @@ def input(channel):
 @type_assert()
 def cleanup():
     # type: () -> None
-    global __setmode_done
+    global __setmode
     global __pins_dict
-    __setmode_done = False
+    __setmode = 0
     __pins_dict.clear()
     ui.cleanup()
