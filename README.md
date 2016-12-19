@@ -6,8 +6,19 @@ RPi.GPIO emulator
 
 - Python 3.5
 
-# RPi.GPIO
+# Install
 
+```bash
+$ pip install git+https://nosix.github.io/raspberry-gpio-emulator/
+```
+
+# API
+
+```python
+import RPi.GPIO as GPIO
+```
+
+function:
 - GPIO.setmode(mode)
 - GPIO.setwarnings(flag)
 - GPIO.setup(channel, state, initial, pull_up_down)
@@ -33,7 +44,7 @@ pull_up_down:
 
 # Usage
 
-See sample.py
+See [sample.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample.py)
 
 # Credit
 
