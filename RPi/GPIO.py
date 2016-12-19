@@ -1,5 +1,6 @@
+from collections import Sequence
+
 from .PIN import PIN
-from .TypeChecker import type_assert
 from .launcher import ui
 
 LOW = 0
@@ -67,7 +68,6 @@ def __change_gpio_in(channel):
     ui.change_gpio_in(channel, pin.is_on)
 
 
-@type_assert(int)
 def setmode(mode):
     # type: (int) -> None
     if mode in [BOARD, BCM]:
@@ -75,16 +75,24 @@ def setmode(mode):
         __setmode = mode
 
 
-@type_assert(bool)
 def setwarnings(flag):
     # type: (bool) -> None
     print('setwarnings(%s)' % flag)
 
 
-@type_assert(int, int, int, int)
 def setup(channel, state, initial=-1, pull_up_down=-1):
-    # type: (int, int, int, int) -> None
+    # type: (int or Sequence[int], int, int, int) -> None
     __check_mode()
+
+    if isinstance(channel, Sequence):
+        for c in channel:
+            __setup(c, state, initial, pull_up_down)
+    else:
+        __setup(channel, state, initial, pull_up_down)
+
+
+def __setup(channel, state, initial=-1, pull_up_down=-1):
+    # type: (int, int, int, int) -> None
 
     global __pins_dict
 
@@ -114,10 +122,27 @@ def setup(channel, state, initial=-1, pull_up_down=-1):
         ui.bind_gpio_in(channel, pin.is_on)
 
 
-@type_assert(int, int)
 def output(channel, outmode):
-    # type: (int, int or bool) -> None
+    # type: (int or Sequence[int], int or bool or Sequence[int] or Sequence[bool]) -> None
     __check_mode()
+
+    if isinstance(channel, Sequence):
+        def zip_outmode():
+            # type: () -> Sequence[tuple]
+            if isinstance(outmode, Sequence):
+                assert len(channel) == len(outmode)
+                return zip(channel, outmode)
+            else:
+                return zip(channel, [outmode] * len(channel))
+
+        for (c, m) in zip_outmode():
+            __output(c, m)
+    else:
+        __output(channel, outmode)
+
+
+def __output(channel, outmode):
+    # type: (int, int or bool) -> None
 
     channel = __to_channel(channel)
 
@@ -135,7 +160,6 @@ def output(channel, outmode):
     ui.change_gpio_out(channel, pin.is_on)
 
 
-@type_assert(int)
 def input(channel):
     # type: (int) -> bool
     __check_mode()
@@ -153,7 +177,6 @@ def input(channel):
     return pin.is_on
 
 
-@type_assert()
 def cleanup():
     # type: () -> None
     global __setmode

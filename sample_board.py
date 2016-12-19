@@ -10,16 +10,24 @@ def main():
         GPIO.setup(12, GPIO.OUT)
         GPIO.setup(11, GPIO.OUT, initial=GPIO.HIGH)
         GPIO.setup(13, GPIO.IN)
-        GPIO.setup(16, GPIO.OUT)
+        GPIO.setup(15, GPIO.OUT)
+        GPIO.setup([16, 18], GPIO.OUT)
+        GPIO.setup((8, 10), GPIO.OUT)
+        GPIO.setup([21, 19], GPIO.IN)
 
         while True:
             GPIO.output(12, GPIO.HIGH)
             GPIO.output(11, 0)
-            GPIO.output(16, True)
+            GPIO.output(15, True)
+            GPIO.output([16, 18], GPIO.HIGH)
+            GPIO.output((8, 10), [GPIO.HIGH, GPIO.LOW])
             time.sleep(1)
+
             GPIO.output(12, GPIO.LOW)
             GPIO.output(11, 1)
-            GPIO.output(16, False)
+            GPIO.output(15, False)
+            GPIO.output((16, 18), GPIO.LOW)
+            GPIO.output([8, 10], (GPIO.LOW, GPIO.HIGH))
             time.sleep(1)
     finally:
         GPIO.cleanup()
