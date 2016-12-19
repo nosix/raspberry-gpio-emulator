@@ -3,6 +3,7 @@ from collections import Sequence
 from . import __version__
 from .PIN import PIN
 from .launcher import ui
+from .task import SyncTask
 
 VERSION = __version__
 
@@ -27,6 +28,10 @@ BCM = 11
 PUD_OFF = 20
 PUD_UP = 21
 PUD_DOWN = 22
+
+RISING = 31
+FALLING = 32
+BOTH = 33
 
 # 0 is GND, 3V3, 5V or ID_SC
 __PINs = [
@@ -77,6 +82,7 @@ def __change_gpio_in(channel):
     # type: (int) -> None
     pin = __pins_dict[channel]
     pin.is_on = not pin.is_on
+    pin.push_event(RISING if pin.is_on else FALLING)
     ui.change_gpio_in(channel, pin.is_on)
 
 
@@ -199,5 +205,38 @@ def __cleanup(channel):
 
     global __pins_dict
 
-    del __pins_dict[channel]
+    if channel in __pins_dict:
+        del __pins_dict[channel]
     ui.cleanup(channel)
+
+
+def wait_for_edge(channel, event, timeout=None):
+    # type: (int, int, int) -> int or None
+    __check_mode()
+
+    pin_or_channel = channel
+    channel = __to_channel(channel)
+
+    __check_channel(channel)
+
+    assert event in [RISING, FALLING, BOTH], 'Event must be set to RISING, FALLING or BOTH'
+
+    pin = __pins_dict[channel]
+    pin.start_monitor()
+
+    def detect_event():
+        ui.update(__change_gpio_in)
+        if pin.has_event():
+            if event == BOTH or pin.pop_event() == event:
+                return True
+        return False
+
+    task = SyncTask(detect_event)
+    task.start(timeout)
+    try:
+        while task.alive():
+            if task.do_task():
+                return pin_or_channel
+        return None
+    finally:
+        pin.stop_monitor()
