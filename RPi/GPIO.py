@@ -19,19 +19,19 @@ RPI_INFO = {
 LOW = 0
 HIGH = 1
 
-OUT = 0
-IN = 1
+OUT = PIN.OUT
+IN = PIN.IN
 
 BOARD = 10
 BCM = 11
 
-PUD_OFF = 20
-PUD_UP = 21
-PUD_DOWN = 22
+PUD_OFF = PIN.PUD_OFF
+PUD_UP = PIN.PUD_UP
+PUD_DOWN = PIN.PUD_DOWN
 
-RISING = 31
-FALLING = 32
-BOTH = 33
+RISING = PIN.RISING
+FALLING = PIN.FALLING
+BOTH = PIN.BOTH
 
 # 0 is GND, 3V3, 5V or ID_SC
 __PINs = [
@@ -71,6 +71,11 @@ def __check_mode():
 def __check_channel(channel):
     # type: (int) -> None
     assert channel in __pins_dict, 'GPIO must be setup before used'
+
+
+def __check_event(event):
+    # type: (int) -> None
+    assert event in [RISING, FALLING, BOTH], 'Event must be set to RISING, FALLING or BOTH'
 
 
 def __to_channel(channel_or_pin):
@@ -117,13 +122,13 @@ def __setup(channel, state, initial=-1, pull_up_down=-1):
     assert channel not in __pins_dict, 'GPIO is already setup'
 
     if state == OUT:
-        pin = PIN("OUT")
+        pin = PIN(channel, "OUT")
         pin.is_on = (initial == HIGH)
         __pins_dict[channel] = pin
         ui.change_gpio_out(channel, pin.is_on)
 
     elif state == IN:
-        pin = PIN("IN")
+        pin = PIN(channel, "IN")
         if pull_up_down == PUD_UP:
             pin.pull_up_down = "PUD_UP"
             pin.is_on = True
@@ -218,8 +223,7 @@ def wait_for_edge(channel, event, timeout=None):
     channel = __to_channel(channel)
 
     __check_channel(channel)
-
-    assert event in [RISING, FALLING, BOTH], 'Event must be set to RISING, FALLING or BOTH'
+    __check_event(event)
 
     pin = __pins_dict[channel]
     pin.start_monitor()
@@ -240,3 +244,42 @@ def wait_for_edge(channel, event, timeout=None):
         return None
     finally:
         pin.stop_monitor()
+
+
+def add_event_detect(channel, event, callback=None):
+    # type: (int, int) -> None
+    __check_mode()
+
+    channel = __to_channel(channel)
+
+    __check_channel(channel)
+    __check_event(event)
+
+    pin = __pins_dict[channel]
+    pin.add_event_detect(event, callback)
+
+
+def event_detected(channel):
+    # type: (int) -> bool
+    __check_mode()
+
+    channel = __to_channel(channel)
+
+    __check_channel(channel)
+
+    ui.update(__change_gpio_in)
+
+    pin = __pins_dict[channel]
+    return pin.event_detected()
+
+
+def remove_event_detect(channel):
+    # type: (int) -> None
+    __check_mode()
+
+    channel = __to_channel(channel)
+
+    __check_channel(channel)
+
+    pin = __pins_dict[channel]
+    pin.remove_event_detect()
