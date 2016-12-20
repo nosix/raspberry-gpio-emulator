@@ -25,15 +25,15 @@ import RPi.GPIO as GPIO
 - GPIO.setup(channel, state, initial, pull_up_down)
     - channel : int or Sequence[int]
     - state : GPIO.OUT or GPIO.IN
-    - initial : GPIO.LOW or GPIO.HIGH (option)
-    - pull_up_down : GPIO.PUD_OFF, GPIO.PUD_DOWN or GPIO.PUD_UP (option)
+    - initial (option) : GPIO.LOW or GPIO.HIGH
+    - pull_up_down (option) : GPIO.PUD_OFF, GPIO.PUD_DOWN or GPIO.PUD_UP
 - GPIO.output(channel, outmode)
     - channel : int or Sequence[int]
     - outmode : GPIO.LOW, GPIO.HIGH or Sequence[GPIO.LOW or GPIO.HIGH]
 - GPIO.input(channel)
     - channel : int
 - GPIO.cleanup(channel)
-    - channel : int or Sequence[int] (option)
+    - channel (option) : int or Sequence[int]
 
 # Usage
 
