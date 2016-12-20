@@ -1,5 +1,5 @@
 __author__ = 'nosix'
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __license__ = 'Apache-2.0'
 
 __all__ = ['GPIO']
