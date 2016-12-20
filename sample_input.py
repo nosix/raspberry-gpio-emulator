@@ -1,3 +1,18 @@
+class Counter:
+    def __init__(self):
+        self.count = 0
+
+    def count_up(self, channel):
+        self.count += 1
+        print('GPIO%02d count=%d' % (channel, self.count))
+
+    def __eq__(self, other):
+        return self.count == other
+
+    def __lt__(self, other):
+        return self.count < other
+
+
 def main():
     import RPi.GPIO as GPIO
     import time
@@ -91,6 +106,18 @@ def main():
         while not GPIO.event_detected(10):
             time.sleep(1)
         GPIO.output(26, GPIO.LOW)
+        GPIO.remove_event_detect(10)
+
+        print('Press! Press! Press!')
+
+        counter = Counter()
+
+        GPIO.add_event_detect(10, GPIO.RISING, callback=counter.count_up, bouncetime=100)
+        GPIO.add_event_callback(10, counter.count_up, bouncetime=500)
+        while counter < 10:
+            GPIO.event_detected(10)  # TODO: remove this
+            time.sleep(1)
+        GPIO.output(19, GPIO.LOW)
         GPIO.remove_event_detect(10)
 
         time.sleep(1)

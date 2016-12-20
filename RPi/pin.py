@@ -1,3 +1,5 @@
+import time
+
 OUT = 0
 IN = 1
 
@@ -11,6 +13,21 @@ BOTH = 33
 
 
 class Pin:
+    class Callback:
+        def __init__(self, callback, bouncetime):
+            self.__callback = callback
+            self.__bouncetime = bouncetime
+            self.__last_call = None
+
+        def __call__(self, *args, **kwargs):
+            try:
+                if self.__last_call is not None and self.__bouncetime is not None:
+                    if (time.time() - self.__last_call) * 1000 < self.__bouncetime:
+                        return
+            finally:
+                self.__last_call = time.time()
+            self.__callback(*args, **kwargs)
+
     def __init__(self, channel, mode):
         # type: (int, int, int) -> None
         self.channel = channel
@@ -46,17 +63,18 @@ class Pin:
         self.__keep_event = False
         self.__event.clear()
 
-    def add_event_detect(self, event, callback):
+    def add_event_detect(self, event, callback, bouncetime):
         # type: (int) -> None
         if event is None:
             assert self.__last_add_event_detected is not None, 'add_event_detect must be called.'
             event = self.__last_add_event_detected
         self.__last_add_event_detected = event
+        c = Pin.Callback(callback, bouncetime) if callback is not None else None
         if event == BOTH:
-            self.__event_callbacks[RISING].append(callback)
-            self.__event_callbacks[FALLING].append(callback)
+            self.__event_callbacks[RISING].append(c)
+            self.__event_callbacks[FALLING].append(c)
         else:
-            self.__event_callbacks[event].append(callback)
+            self.__event_callbacks[event].append(c)
 
     def remove_event_detect(self):
         # type: () -> None

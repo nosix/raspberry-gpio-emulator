@@ -240,7 +240,7 @@ def wait_for_edge(channel, event, timeout=None):
         pin.stop_monitor()
 
 
-def add_event_detect(channel, event, callback=None):
+def add_event_detect(channel, event, callback=None, bouncetime=None):
     # type: (int, int) -> None
     __check_mode()
 
@@ -250,10 +250,10 @@ def add_event_detect(channel, event, callback=None):
     __check_event(event)
 
     pin = __pins_dict[channel]
-    pin.add_event_detect(event, callback)
+    pin.add_event_detect(event, callback, bouncetime)
 
 
-def add_event_callback(channel, callback):
+def add_event_callback(channel, callback, bouncetime=None):
     # type: (int) -> None
     __check_mode()
 
@@ -262,7 +262,7 @@ def add_event_callback(channel, callback):
     __check_channel(channel)
 
     pin = __pins_dict[channel]
-    pin.add_event_detect(None, callback)
+    pin.add_event_detect(None, callback, bouncetime)
 
 
 def event_detected(channel):
