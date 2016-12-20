@@ -2,7 +2,7 @@ import logging
 from tkinter import *
 from tkinter.font import *
 
-from .Pipe import Pipe
+from .pipe import Pipe
 
 _logger = logging.getLogger('RPi.UIServer')  # type: logging.Logger
 

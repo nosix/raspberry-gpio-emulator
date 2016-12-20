@@ -1,6 +1,6 @@
 import sys
 
-from .Pipe import Pipe
+from .pipe import Pipe
 
 
 class UI:

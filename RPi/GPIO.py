@@ -1,7 +1,7 @@
 from collections import Sequence
 
 from . import __version__
-from .PIN import PIN
+from . import pin as pins
 from .launcher import ui
 from .task import SyncTask
 
@@ -19,19 +19,19 @@ RPI_INFO = {
 LOW = 0
 HIGH = 1
 
-OUT = PIN.OUT
-IN = PIN.IN
+OUT = pins.OUT
+IN = pins.IN
 
 BOARD = 10
 BCM = 11
 
-PUD_OFF = PIN.PUD_OFF
-PUD_UP = PIN.PUD_UP
-PUD_DOWN = PIN.PUD_DOWN
+PUD_OFF = pins.PUD_OFF
+PUD_UP = pins.PUD_UP
+PUD_DOWN = pins.PUD_DOWN
 
-RISING = PIN.RISING
-FALLING = PIN.FALLING
-BOTH = PIN.BOTH
+RISING = pins.RISING
+FALLING = pins.FALLING
+BOTH = pins.BOTH
 
 # 0 is GND, 3V3, 5V or ID_SC
 __PINs = [
@@ -102,7 +102,7 @@ def setwarnings(flag):
     print('setwarnings(%s)' % flag)
 
 
-def setup(channel, state, initial=-1, pull_up_down=-1):
+def setup(channel, state, initial=LOW, pull_up_down=PUD_OFF):
     # type: (int or Sequence[int], int, int, int) -> None
     __check_mode()
 
@@ -113,32 +113,26 @@ def setup(channel, state, initial=-1, pull_up_down=-1):
         __setup(__to_channel(channel), state, initial, pull_up_down)
 
 
-def __setup(channel, state, initial=-1, pull_up_down=-1):
+def __setup(channel, state, initial=LOW, pull_up_down=PUD_OFF):
     # type: (int, int, int, int) -> None
 
     global __pins_dict
 
     assert channel in __GPIO_names, 'GPIO %d does not exist' % channel
     assert channel not in __pins_dict, 'GPIO is already setup'
+    assert state in [OUT, IN], 'State must be set to OUT or IN'
+    assert pull_up_down in [PUD_OFF, PUD_UP, PUD_DOWN], 'Pull up/down must be set to PUD_OFF, PUD_UP or PUD_DOWN'
+
+    pin = pins.Pin(channel, state)
+    __pins_dict[channel] = pin
 
     if state == OUT:
-        pin = PIN(channel, "OUT")
         pin.is_on = (initial == HIGH)
-        __pins_dict[channel] = pin
         ui.change_gpio_out(channel, pin.is_on)
 
     elif state == IN:
-        pin = PIN(channel, "IN")
-        if pull_up_down == PUD_UP:
-            pin.pull_up_down = "PUD_UP"
-            pin.is_on = True
-        elif pull_up_down == PUD_DOWN:
-            pin.pull_up_down = "PUD_DOWN"
-            pin.is_on = False
-        else:
-            pin.pull_up_down = "PUD_OFF"
-            pin.is_on = False
-        __pins_dict[channel] = pin
+        pin.pull_up_down = pull_up_down
+        pin.is_on = (pull_up_down == PUD_UP)
         ui.bind_gpio_in(channel, pin.is_on)
 
 
@@ -170,7 +164,7 @@ def __output(channel, outmode):
     if isinstance(outmode, bool):
         outmode = HIGH if outmode else LOW
 
-    assert pin.mode == 'OUT', 'GPIO must be setup as OUT'
+    assert pin.mode == OUT, 'GPIO must be setup as OUT'
     assert outmode in [LOW, HIGH], 'Output must be set to HIGH/LOW'
 
     pin.is_on = (outmode == HIGH)
