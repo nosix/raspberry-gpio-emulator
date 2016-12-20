@@ -43,6 +43,10 @@ import RPi.GPIO as GPIO
     - event : GPIO.RISING, GPIO.FALLING or GPIO.BOTH
     - callback : None or function(channel)
         - channel : int
+- GPIO.add_event_callback(channel, callback)
+    - channel : int
+    - callback : function(channel)
+        - channel : int
 - GPIO.remove_event_detect(channel)
     - channel : int
 - GPIO.event_detected(channel) : bool

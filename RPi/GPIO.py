@@ -253,6 +253,18 @@ def add_event_detect(channel, event, callback=None):
     pin.add_event_detect(event, callback)
 
 
+def add_event_callback(channel, callback):
+    # type: (int) -> None
+    __check_mode()
+
+    channel = __to_channel(channel)
+
+    __check_channel(channel)
+
+    pin = __pins_dict[channel]
+    pin.add_event_detect(None, callback)
+
+
 def event_detected(channel):
     # type: (int) -> bool
     __check_mode()

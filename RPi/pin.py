@@ -21,6 +21,7 @@ class Pin:
         self.__keep_event = False  # If it is true then PIN keep the event to __event queue.
         self.__event_callbacks = {RISING: [], FALLING: []}  # They are called when push_event() is called.
         self.__event_detected = False  # If it is true then callbacks are called.
+        self.__last_add_event_detected = None
 
     def has_event(self):
         # type: () -> bool
@@ -47,6 +48,10 @@ class Pin:
 
     def add_event_detect(self, event, callback):
         # type: (int) -> None
+        if event is None:
+            assert self.__last_add_event_detected is not None, 'add_event_detect must be called.'
+            event = self.__last_add_event_detected
+        self.__last_add_event_detected = event
         if event == BOTH:
             self.__event_callbacks[RISING].append(callback)
             self.__event_callbacks[FALLING].append(callback)
@@ -58,6 +63,7 @@ class Pin:
         self.__event_callbacks[RISING].clear()
         self.__event_callbacks[FALLING].clear()
         self.__event_detected = False
+        self.__last_add_event_detected = None
 
     def __call_event_callbacks(self, event):
         # type: (int) -> None

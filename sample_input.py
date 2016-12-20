@@ -82,6 +82,17 @@ def main():
         GPIO.output(13, GPIO.HIGH)
         GPIO.remove_event_detect(10)
 
+        def changed(ch):
+            print('changed GPIO%02d' % ch)
+
+        GPIO.add_event_detect(10, GPIO.BOTH)
+        GPIO.add_event_callback(10, fallen)
+        GPIO.add_event_callback(10, changed)
+        while not GPIO.event_detected(10):
+            time.sleep(1)
+        GPIO.output(26, GPIO.LOW)
+        GPIO.remove_event_detect(10)
+
         time.sleep(1)
     finally:
         GPIO.cleanup()
