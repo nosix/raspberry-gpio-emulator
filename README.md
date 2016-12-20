@@ -37,16 +37,18 @@ import RPi.GPIO as GPIO
 - GPIO.wait_for_edge(channel, event, timeout) : int or None
     - channel : int
     - event : GPIO.RISING, GPIO.FALLING or GPIO.BOTH
-    - timeout (option) : int or None
-- GPIO.add_event_detect(channel, event, callback)
+    - timeout (option) : int
+- GPIO.add_event_detect(channel, event, callback, bouncetime)
     - channel : int
     - event : GPIO.RISING, GPIO.FALLING or GPIO.BOTH
-    - callback : None or function(channel)
+    - callback (option) : function(channel)
         - channel : int
-- GPIO.add_event_callback(channel, callback)
+    - bouncetime (option) : int
+- GPIO.add_event_callback(channel, callback, bouncetime)
     - channel : int
     - callback : function(channel)
         - channel : int
+    - bouncetime (option) : int
 - GPIO.remove_event_detect(channel)
     - channel : int
 - GPIO.event_detected(channel) : bool
