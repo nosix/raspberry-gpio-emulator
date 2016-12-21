@@ -32,10 +32,11 @@ else:
     import fcntl
     import sys
     from .ui_server import UI
+    from .ui_frame import Frame
 
     fcntl.fcntl(server_rfd, fcntl.F_SETFL, os.O_NONBLOCK)
     pipe = Pipe(os.fdopen(server_wfd, 'wb'), os.fdopen(server_rfd, 'rb'))
-    ui = UI(pipe)
+    ui = UI(pipe, Frame())
     try:
         ui.run()
         sys.exit(0)

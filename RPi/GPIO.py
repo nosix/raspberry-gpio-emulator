@@ -346,7 +346,6 @@ def gpio_function(channel):
 
 
 class PWM:
-
     def __init__(self, channel, frequency):
         # type: (int, float) -> None
         self.channel = channel
