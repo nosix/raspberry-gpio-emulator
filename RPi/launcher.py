@@ -9,9 +9,9 @@ pid = os.fork()
 
 if pid == 0:
     # Child process
+    import inspect
     import signal
     import traceback
-    import inspect
     from .ui_client import UI
 
     pipe = Pipe(os.fdopen(client_wfd, 'wb'), os.fdopen(client_rfd, 'rb'))
@@ -29,14 +29,22 @@ if pid == 0:
     signal.signal(signal.SIGINT, interrupt)
 else:
     # Parent process
+    import argparse
     import fcntl
+    import importlib
     import sys
     from .ui_server import UI
-    from .ui_frame import Frame
+
+    parser = argparse.ArgumentParser(description='RPi.GPIO emulator.')
+    parser.add_argument('--ui', dest='ui_module', default='.ui_frame', help='GUI module that has create_ui() function')
+    args = parser.parse_args()
+
+    ui_module = importlib.import_module(args.ui_module, 'RPi')
 
     fcntl.fcntl(server_rfd, fcntl.F_SETFL, os.O_NONBLOCK)
     pipe = Pipe(os.fdopen(server_wfd, 'wb'), os.fdopen(server_rfd, 'rb'))
-    ui = UI(pipe, Frame())
+
+    ui = UI(pipe, ui_module.create_ui())
     try:
         ui.run()
         sys.exit(0)

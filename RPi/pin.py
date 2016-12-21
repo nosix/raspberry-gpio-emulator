@@ -37,7 +37,7 @@ class Pin:
         # type: (int, int, int) -> None
         self.channel = channel
         self.mode = mode  # OUT/IN
-        self.is_on = False
+        self.is_high = False
         self.pull_up_down = PUD_OFF  # PUD_OFF/PUD_UP/PUD_DOWN
         self.__event = []  # detected events (RISING/FALLING) queue
         self.__keep_event = False  # If it is true then PIN keep the event to __event queue.

@@ -50,17 +50,17 @@ class UI:
             self.__frame.cleanup(channel)
         else:
             channel = buf.pop(0)
-            is_on = buf.pop(0)
-            # TODO: if channel or is_on can't get, push back to buffer.
+            is_high = buf.pop(0)
+            # TODO: if channel or is_high can't get, push back to buffer.
             if cmd == Pipe.CMD_CHANGE_GPIO_OUT:
-                _logger.debug("change_gpio_out(%d,%d)" % (channel, is_on))
-                self.__frame.change_gpio_out(channel, is_on == 1)
+                _logger.debug("change_gpio_out(%d,%d)" % (channel, is_high))
+                self.__frame.change_gpio_out(channel, is_high == 1)
             elif cmd == Pipe.CMD_BIND_GPIO_IN:
-                _logger.debug("bind_gpio_in(%d,%d)" % (channel, is_on))
-                self.__frame.bind_gpio_in(channel, is_on == 1)
+                _logger.debug("bind_gpio_in(%d,%d)" % (channel, is_high))
+                self.__frame.bind_gpio_in(channel, is_high == 1)
             elif cmd == Pipe.CMD_CHANGE_GPIO_IN:
-                _logger.debug("change_gpio_in(%d,%d)" % (channel, is_on))
-                self.__frame.change_gpio_in(channel, is_on == 1)
+                _logger.debug("change_gpio_in(%d,%d)" % (channel, is_high))
+                self.__frame.change_gpio_in(channel, is_high == 1)
             else:
                 raise AssertionError('Illegal command value (%d)' % cmd)
 

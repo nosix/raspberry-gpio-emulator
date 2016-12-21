@@ -143,9 +143,9 @@ class Frame:
         btn['text'] = 'GPIO%02d\n%s' % (channel, value)
 
     @staticmethod
-    def __set_state(btn, is_on, change_relief=True):
+    def __set_state(btn, is_high, change_relief=True):
         # type: (Label, bool) -> None
-        if is_on:
+        if is_high:
             btn.configure(fg=Frame.COLOR_3V3)
             if change_relief:
                 btn.configure(relief=RAISED)
@@ -162,21 +162,25 @@ class Frame:
         btn.bind('<Button-1>', lambda e: None)
         self.__set_text(btn, channel)
 
-    def change_gpio_out(self, channel, is_on):
+    def change_gpio_out(self, channel, is_high):
         # type: (int, bool) -> None
         btn = self.__gpio_btn_dict[channel]
         btn.configure(relief=FLAT)
-        self.__set_state(btn, is_on, False)
+        self.__set_state(btn, is_high, False)
         self.__set_text(btn, channel, 'OUT')
 
-    def bind_gpio_in(self, channel, is_on):
+    def bind_gpio_in(self, channel, is_high):
         # type: (int, bool) -> None
         btn = self.__gpio_btn_dict[channel]
         btn.bind('<Button-1>', lambda e: self.__toggle(channel))
-        self.__set_state(btn, is_on)
+        self.__set_state(btn, is_high)
         self.__set_text(btn, channel, 'IN')
 
-    def change_gpio_in(self, channel, is_on):
+    def change_gpio_in(self, channel, is_high):
         # type: (int, bool) -> None
         btn = self.__gpio_btn_dict[channel]
-        self.__set_state(btn, is_on)
+        self.__set_state(btn, is_high)
+
+
+def create_ui():
+    return Frame()

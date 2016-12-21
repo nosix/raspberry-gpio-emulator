@@ -17,17 +17,17 @@ class UI:
         # type: () -> None
         self.__alive = False
 
-    def change_gpio_out(self, channel, is_on):
+    def change_gpio_out(self, channel, is_high):
         # type: (int, bool) -> None
-        self.__pipe.write_bytes([Pipe.CMD_CHANGE_GPIO_OUT, channel, 1 if is_on else 0])
+        self.__pipe.write_bytes([Pipe.CMD_CHANGE_GPIO_OUT, channel, 1 if is_high else 0])
 
-    def bind_gpio_in(self, channel, is_on):
+    def bind_gpio_in(self, channel, is_high):
         # type: (int, bool) -> None
-        self.__pipe.write_bytes([Pipe.CMD_BIND_GPIO_IN, channel, 1 if is_on else 0])
+        self.__pipe.write_bytes([Pipe.CMD_BIND_GPIO_IN, channel, 1 if is_high else 0])
 
-    def change_gpio_in(self, channel, is_on):
+    def change_gpio_in(self, channel, is_high):
         # type: (int, bool) -> None
-        self.__pipe.write_bytes([Pipe.CMD_CHANGE_GPIO_IN, channel, 1 if is_on else 0])
+        self.__pipe.write_bytes([Pipe.CMD_CHANGE_GPIO_IN, channel, 1 if is_high else 0])
 
     def cleanup(self, channel):
         # type: (int) -> None

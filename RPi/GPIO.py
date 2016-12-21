@@ -121,9 +121,9 @@ def __to_channel(channel_or_pin):
 def __change_gpio_in(channel):
     # type: (int) -> None
     pin = __pins_dict[channel]
-    pin.is_on = not pin.is_on
-    pin.push_event(RISING if pin.is_on else FALLING)
-    ui.change_gpio_in(channel, pin.is_on)
+    pin.is_high = not pin.is_high
+    pin.push_event(RISING if pin.is_high else FALLING)
+    ui.change_gpio_in(channel, pin.is_high)
 
 
 ui.on_change = __change_gpio_in
@@ -173,13 +173,13 @@ def __setup(channel, state, initial=LOW, pull_up_down=PUD_OFF):
     __pins_dict[channel] = pin
 
     if state == OUT:
-        pin.is_on = (initial == HIGH)
-        ui.change_gpio_out(channel, pin.is_on)
+        pin.is_high = (initial == HIGH)
+        ui.change_gpio_out(channel, pin.is_high)
 
     elif state == IN:
         pin.pull_up_down = pull_up_down
-        pin.is_on = (pull_up_down == PUD_UP)
-        ui.bind_gpio_in(channel, pin.is_on)
+        pin.is_high = (pull_up_down == PUD_UP)
+        ui.bind_gpio_in(channel, pin.is_high)
 
 
 def output(channel, outmode):
@@ -213,8 +213,8 @@ def __output(channel, outmode):
     assert pin.mode == OUT, 'GPIO must be setup as OUT'
     assert outmode in [LOW, HIGH], 'Output must be set to HIGH/LOW'
 
-    pin.is_on = (outmode == HIGH)
-    ui.change_gpio_out(channel, pin.is_on)
+    pin.is_high = (outmode == HIGH)
+    ui.change_gpio_out(channel, pin.is_high)
 
 
 def input(channel):
@@ -227,7 +227,7 @@ def input(channel):
 
     pin = __pins_dict[channel]
 
-    return pin.is_on
+    return pin.is_high
 
 
 def cleanup(channel=None):
