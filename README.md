@@ -79,9 +79,37 @@ Documentation of raspberry-gpio-python:
 - [Inputs](https://sourceforge.net/p/raspberry-gpio-python/wiki/Inputs/)
 
 Sample code:
-- [sample_board.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_board.py)
-- [sample_bcm.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_bcm.py)
-- [sample_input.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_input.py)
+- [sample_board.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_board.py)
+- [sample_bcm.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_bcm.py)
+- [sample_input.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_input.py)
+
+# Custom UI
+
+You can use custom user interface which you wrote.
+`--ui` option enable custom user interface.
+`--ui` option require user interface module which has create_ui() function.
+
+```
+$ python sample_custom_ui_launcher.py --ui sample_custom_ui
+```
+
+Sample code:
+- [sample_custom_ui_launcher.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_custom_ui_launcher.py)
+- [sample_custom_ui.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_custom_ui.py)
+
+# Plugin
+
+You can use plugins which you wrote.
+Plugin observe change event.
+
+```
+$ python sample_plugin.py sample_plugin_a sample_plugin_b
+```
+
+Sample code:
+- [sample_plugin_launcher.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_plugin_launcher.py)
+- [sample_plugin_a.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_plugin_a.py)
+- [sample_plugin_b.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_plugin_b.py)
 
 # Credit
 

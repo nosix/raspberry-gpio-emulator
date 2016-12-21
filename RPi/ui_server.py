@@ -23,10 +23,11 @@ class UI:
     W_TYPE_5V = -3
     W_TYPE_ID_SC = -4
 
-    def __init__(self, pipe, frame):
+    def __init__(self, pipe, frame, plugins):
         # type: (Pipe, Frame) -> None
         self.__pipe = pipe
         self.__frame = frame
+        self.__plugins = plugins
 
     def close(self):
         self.__frame.close()
@@ -48,6 +49,8 @@ class UI:
             # TODO: if channel can't get, push back to buffer.
             _logger.debug("cleanup(%d)" % channel)
             self.__frame.cleanup(channel)
+            for p in self.__plugins:
+                p.cleanup(channel)
         else:
             channel = buf.pop(0)
             is_high = buf.pop(0)
@@ -55,12 +58,18 @@ class UI:
             if cmd == Pipe.CMD_CHANGE_GPIO_OUT:
                 _logger.debug("change_gpio_out(%d,%d)" % (channel, is_high))
                 self.__frame.change_gpio_out(channel, is_high == 1)
+                for p in self.__plugins:
+                    p.change_gpio_out(channel, is_high)
             elif cmd == Pipe.CMD_BIND_GPIO_IN:
                 _logger.debug("bind_gpio_in(%d,%d)" % (channel, is_high))
                 self.__frame.bind_gpio_in(channel, is_high == 1)
+                for p in self.__plugins:
+                    p.bind_gpio_in(channel, is_high)
             elif cmd == Pipe.CMD_CHANGE_GPIO_IN:
                 _logger.debug("change_gpio_in(%d,%d)" % (channel, is_high))
                 self.__frame.change_gpio_in(channel, is_high == 1)
+                for p in self.__plugins:
+                    p.change_gpio_in(channel, is_high)
             else:
                 raise AssertionError('Illegal command value (%d)' % cmd)
 
