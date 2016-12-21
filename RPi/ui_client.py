@@ -1,4 +1,5 @@
-import sys
+from _thread import interrupt_main
+from threading import Thread
 
 from .pipe import Pipe
 
@@ -7,11 +8,14 @@ class UI:
     def __init__(self, pipe):
         # type: (Pipe) -> None
         self.__pipe = pipe
+        self.__thread = Thread(target=self.__update)
+        self.__alive = True
+        self.__thread.start()
+        self.on_change = lambda channel: None  # callback function that is called when pipe read CMD_CHANGE_GPIO_IN
 
     def __close(self):
         # type: () -> None
-        self.__pipe.close()
-        sys.exit(0)
+        self.__alive = False
 
     def change_gpio_out(self, channel, is_on):
         # type: (int, bool) -> None
@@ -29,17 +33,17 @@ class UI:
         # type: (int) -> None
         self.__pipe.write_bytes([Pipe.CMD_CLEANUP, channel])
 
-    def update(self, callback):
+    def __update(self):
         buf = bytearray()
-        while True:
+        while self.__alive:
             data = self.__pipe.read_bytes()
-            if not data:
-                break
             buf.extend(data)
             while len(buf) > 0:
-                self.__handle_buffer(buf, callback)
+                self.__handle_buffer(buf)
+        self.__pipe.close()
+        interrupt_main()
 
-    def __handle_buffer(self, buf, callback):
+    def __handle_buffer(self, buf):
         # type: (bytearray) -> None
         cmd = buf.pop(0)
         if cmd == Pipe.CMD_EXIT:
@@ -47,6 +51,6 @@ class UI:
         elif cmd == Pipe.CMD_CHANGE_GPIO_IN:
             channel = buf.pop(0)
             # TODO: if channel can't get, push back to buffer.
-            callback(channel)
+            self.on_change(channel)
         else:
             raise AssertionError('Illegal command value (%d)' % cmd)

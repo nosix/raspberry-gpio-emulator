@@ -34,9 +34,8 @@ class UI:
             'height': 2
         }
         self.__gpio_btn_dict = {}
-        self.__run()
 
-    def __close(self):
+    def close(self):
         self.__root.quit()
         self.__pipe.write_bytes([Pipe.CMD_EXIT])
         self.__pipe.close()
@@ -76,9 +75,9 @@ class UI:
         else:
             self.__gpio_btn_dict[widget] = self.__new_gpio_button(row, col, widget)
 
-    def __run(self):
+    def run(self):
         self.__root.title("GPIO EMULATOR")
-        self.__root.protocol("WM_DELETE_WINDOW", self.__close)
+        self.__root.protocol("WM_DELETE_WINDOW", self.close)
 
         widgets = [
             [

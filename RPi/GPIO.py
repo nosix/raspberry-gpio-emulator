@@ -91,6 +91,9 @@ def __change_gpio_in(channel):
     ui.change_gpio_in(channel, pin.is_on)
 
 
+ui.on_change = __change_gpio_in
+
+
 def setmode(mode):
     # type: (int) -> None
     global __setmode
@@ -179,8 +182,6 @@ def input(channel):
 
     __check_channel(channel)
 
-    ui.update(__change_gpio_in)
-
     pin = __pins_dict[channel]
 
     return pin.is_on
@@ -223,7 +224,6 @@ def wait_for_edge(channel, event, timeout=None):
     pin.start_monitor()
 
     def detect_event():
-        ui.update(__change_gpio_in)
         if pin.has_event():
             if event == BOTH or pin.pop_event() == event:
                 return True
@@ -272,8 +272,6 @@ def event_detected(channel):
     channel = __to_channel(channel)
 
     __check_channel(channel)
-
-    ui.update(__change_gpio_in)
 
     pin = __pins_dict[channel]
     return pin.event_detected()

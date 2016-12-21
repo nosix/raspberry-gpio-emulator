@@ -115,7 +115,6 @@ def main():
         GPIO.add_event_detect(10, GPIO.RISING, callback=counter.count_up, bouncetime=100)
         GPIO.add_event_callback(10, counter.count_up, bouncetime=500)
         while counter < 10:
-            GPIO.event_detected(10)  # TODO: remove this
             time.sleep(1)
         GPIO.output(19, GPIO.LOW)
         GPIO.remove_event_detect(10)
