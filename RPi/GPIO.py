@@ -33,7 +33,14 @@ RISING = pins.RISING
 FALLING = pins.FALLING
 BOTH = pins.BOTH
 
-# 0 is GND, 3V3, 5V or ID_SC
+SERIAL = pins.SERIAL
+SPI = pins.SPI
+I2C = pins.I2C
+HARD_PWM = pins.HARD_PWM
+
+UNKNOWN = -1
+
+# pin -> GPIO (0 is GND, 3V3, 5V or ID_SC)
 __PINs = [
     0, 0,
     2, 0,
@@ -57,8 +64,36 @@ __PINs = [
     0, 21
 ]
 
-__GPIO_names = set(__PINs)
-__GPIO_names.remove(0)
+__gpio_function = {
+    2: IN,
+    3: IN,
+    4: IN,
+    14: SERIAL,
+    15: SERIAL,
+    17: IN,
+    18: IN,
+    27: IN,
+    22: IN,
+    23: IN,
+    24: IN,
+    10: IN,
+    9: IN,
+    25: IN,
+    11: IN,
+    8: IN,
+    7: IN,
+    5: IN,
+    6: IN,
+    12: IN,
+    13: IN,
+    19: IN,
+    16: IN,
+    26: IN,
+    20: IN,
+    21: IN
+}
+
+__GPIO_names = __gpio_function.keys()
 
 __setmode = 0
 __pins_dict = {}
@@ -96,7 +131,15 @@ ui.on_change = __change_gpio_in
 
 def setmode(mode):
     # type: (int) -> None
+
+    if mode not in [BOARD, BCM]:
+        raise ValueError('An invalid mode was passed to setmode()')
+
     global __setmode
+
+    if __setmode != 0 and __setmode != mode:
+        raise ValueError('A different mode has already been set!')
+
     __setmode = mode
 
 
@@ -287,3 +330,16 @@ def remove_event_detect(channel):
 
     pin = __pins_dict[channel]
     pin.remove_event_detect()
+
+
+def gpio_function(channel):
+    __check_mode()
+
+    channel = __to_channel(channel)
+
+    if channel in __pins_dict:
+        return __pins_dict[channel].mode
+    elif channel in __gpio_function:
+        return __gpio_function[channel]
+    else:
+        raise ValueError('The channel sent is invalid on a Raspberry Pi')

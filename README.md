@@ -53,6 +53,8 @@ import RPi.GPIO as GPIO
     - channel : int
 - GPIO.event_detected(channel) : bool
     - channel : int
+- GPIO.gpio_function(channel) : GPIO.OUT, GPIO.IN, GPIO.SERIAL, GPIO.SPI, GPIO.I2C or GPIO.HARD_PWM
+    - channel : int
 
 # Usage
 

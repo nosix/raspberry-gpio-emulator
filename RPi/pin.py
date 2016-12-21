@@ -11,6 +11,11 @@ RISING = 31
 FALLING = 32
 BOTH = 33
 
+SERIAL = 40
+SPI = 41
+I2C = 42
+HARD_PWM = 43
+
 
 class Pin:
     class Callback:
