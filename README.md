@@ -77,11 +77,15 @@ Documentation of raspberry-gpio-python:
 - [RPi.GPIO module basics](https://sourceforge.net/p/raspberry-gpio-python/wiki/BasicUsage/)
 - [Outputs](https://sourceforge.net/p/raspberry-gpio-python/wiki/Outputs/)
 - [Inputs](https://sourceforge.net/p/raspberry-gpio-python/wiki/Inputs/)
+- [Check function](https://sourceforge.net/p/raspberry-gpio-python/wiki/Checking%20function%20of%20GPIO%20channels/)
+- [PWM](https://sourceforge.net/p/raspberry-gpio-python/wiki/PWM/)
 
 Sample code:
 - [sample_board.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_board.py)
 - [sample_bcm.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_bcm.py)
 - [sample_input.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_input.py)
+- [sample_gpio_function.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_gpio_functionpy)
+- [sample_pwm.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_pwm.py)
 
 # Credit
 
