@@ -81,14 +81,11 @@ Documentation of raspberry-gpio-python:
 - [PWM](https://sourceforge.net/p/raspberry-gpio-python/wiki/PWM/)
 
 Sample code:
-- [sample_board.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_board.py)
-- [sample_bcm.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_bcm.py)
-- [sample_input.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_input.py)
-- [sample_gpio_function.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_gpio_functionpy)
-- [sample_pwm.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/sample_pwm.py)
 - [sample_board.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_board.py)
 - [sample_bcm.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_bcm.py)
 - [sample_input.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_input.py)
+- [sample_gpio_function.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_gpio_function.py)
+- [sample_pwm.py](https://github.com/nosix/raspberry-gpio-emulator/blob/master/samples/sample_pwm.py)
 
 # Custom UI
 
