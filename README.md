@@ -18,43 +18,58 @@ $ pip install git+https://github.com/nosix/raspberry-gpio-emulator/
 import RPi.GPIO as GPIO
 ```
 
-- GPIO.setmode(mode)
+GPIO:
+
+- setmode(mode)
     - mode : GPIO.BOARD or GPIO.BCP
-- GPIO.setwarnings(flag)
+- setwarnings(flag)
     - flag : bool
-- GPIO.setup(channel, state, initial, pull_up_down)
+- setup(channel, state, initial, pull_up_down)
     - channel : int or Sequence[int]
     - state : GPIO.OUT or GPIO.IN
     - initial (option) : GPIO.LOW or GPIO.HIGH
     - pull_up_down (option) : GPIO.PUD_OFF, GPIO.PUD_DOWN or GPIO.PUD_UP
-- GPIO.output(channel, outmode)
+- output(channel, outmode)
     - channel : int or Sequence[int]
     - outmode : GPIO.LOW, GPIO.HIGH or Sequence[GPIO.LOW or GPIO.HIGH]
-- GPIO.input(channel) : bool
+- input(channel) : bool
     - channel : int
-- GPIO.cleanup(channel)
+- cleanup(channel)
     - channel (option) : int or Sequence[int]
-- GPIO.wait_for_edge(channel, event, timeout) : int or None
+- wait_for_edge(channel, event, timeout) : int or None
     - channel : int
     - event : GPIO.RISING, GPIO.FALLING or GPIO.BOTH
-    - timeout (option) : int
-- GPIO.add_event_detect(channel, event, callback, bouncetime)
+    - timeout (option) : int [millisecond]
+- add_event_detect(channel, event, callback, bouncetime)
     - channel : int
     - event : GPIO.RISING, GPIO.FALLING or GPIO.BOTH
     - callback (option) : function(channel)
         - channel : int
-    - bouncetime (option) : int
-- GPIO.add_event_callback(channel, callback, bouncetime)
+    - bouncetime (option) : int [millisecond]
+- add_event_callback(channel, callback, bouncetime)
     - channel : int
     - callback : function(channel)
         - channel : int
-    - bouncetime (option) : int
-- GPIO.remove_event_detect(channel)
+    - bouncetime (option) : int [millisecond]
+- remove_event_detect(channel)
     - channel : int
-- GPIO.event_detected(channel) : bool
+- event_detected(channel) : bool
     - channel : int
-- GPIO.gpio_function(channel) : GPIO.OUT, GPIO.IN, GPIO.SERIAL, GPIO.SPI, GPIO.I2C or GPIO.HARD_PWM
+- gpio_function(channel) : GPIO.OUT, GPIO.IN, GPIO.SERIAL, GPIO.SPI, GPIO.I2C or GPIO.HARD_PWM
     - channel : int
+- PWM(channel, frequency) : GPIO.PWM
+    - channel : int
+    - frequency : float [Hz]
+
+GPIO.PWM:
+
+- start(duty_cycle)
+    - duty_cycle : float [0.0..100.0]
+- stop()
+- ChangeFrequency(frequency)
+    - frequency : float [Hz]
+- ChangeDutyCycle(duty_cycle)
+    - duty_cycle : float [0.0..100.0]
 
 # Usage
 

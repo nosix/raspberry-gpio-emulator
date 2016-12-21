@@ -343,3 +343,29 @@ def gpio_function(channel):
         return __gpio_function[channel]
     else:
         raise ValueError('The channel sent is invalid on a Raspberry Pi')
+
+
+class PWM:
+
+    def __init__(self, channel, frequency):
+        # type: (int, float) -> None
+        self.channel = channel
+        self.__frequency = frequency  # Hz
+        self.__duty_cycle = 0  # 0.0 <= duty_cycle <= 100.0
+
+    def start(self, duty_cycle):
+        # type: (float) -> None
+        self.__duty_cycle = duty_cycle
+        print("start() don't do anything.")
+
+    def stop(self):
+        # type: () -> None
+        print("stop() don't do anything.")
+
+    def ChangeFrequency(self, frequency):
+        # type: (float) -> None
+        self.__frequency = frequency
+
+    def ChangeDutyCycle(self, duty_cycle):
+        # type: (float) -> None
+        self.__duty_cycle = duty_cycle
