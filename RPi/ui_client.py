@@ -11,6 +11,7 @@ class UI:
         self.__thread = Thread(target=self.__update)
         self.__alive = True
         self.__thread.start()
+        self.interrupt_main_to_close = True
         self.on_change = lambda channel: None  # callback function that is called when pipe read CMD_CHANGE_GPIO_IN
 
     def __close(self):
@@ -41,7 +42,8 @@ class UI:
             while len(buf) > 0:
                 self.__handle_buffer(buf)
         self.__pipe.close()
-        interrupt_main()
+        if self.interrupt_main_to_close:
+            interrupt_main()
 
     def __handle_buffer(self, buf):
         # type: (bytearray) -> None

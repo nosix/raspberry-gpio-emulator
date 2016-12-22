@@ -74,13 +74,17 @@ class UI:
                 raise AssertionError('Illegal command value (%d)' % cmd)
 
     def __update(self):
-        self.__frame.update()
+        try:
+            self.__frame.update()
 
-        buf = bytearray()
-        while True:
-            data = self.__pipe.read_bytes()
-            if not data:
-                break
-            buf.extend(data)
-            while len(buf) > 0:
-                self.__handle_buffer(buf)
+            buf = bytearray()
+            while True:
+                data = self.__pipe.read_bytes()
+                if not data:
+                    break
+                buf.extend(data)
+                while len(buf) > 0:
+                    self.__handle_buffer(buf)
+        except Exception as ex:
+            self.close()
+            raise ex

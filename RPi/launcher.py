@@ -9,9 +9,7 @@ pid = os.fork()
 
 if pid == 0:
     # Child process
-    import inspect
     import signal
-    import traceback
     from .ui_client import UI
 
     pipe = Pipe(os.fdopen(client_wfd, 'wb'), os.fdopen(client_rfd, 'rb'))
@@ -19,11 +17,11 @@ if pid == 0:
 
 
     def interrupt(signum, stack):
-        s = stack
-        while s.f_back is not None:
-            s = s.f_back
-        if inspect.getframeinfo(s).function != '_shutdown':
-            traceback.print_stack(stack)
+        ui.interrupt_main_to_close = False
+        import sys
+        import traceback
+        traceback.print_stack(stack)
+        sys.exit(1)
 
 
     signal.signal(signal.SIGINT, interrupt)
