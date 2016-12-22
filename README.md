@@ -1,6 +1,6 @@
 # raspberry-gpio-emulator
 
-RPi.GPIO emulator
+RPi.GPIO emulator (tested by macOS 10.12)
 
 # Require
 
