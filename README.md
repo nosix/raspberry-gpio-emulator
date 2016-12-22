@@ -104,6 +104,7 @@ Sample code:
 # Plugin
 
 You can use plugins which you wrote.
+List plugin modules which have create_plugin() function.
 Plugin observe change event.
 
 ```
