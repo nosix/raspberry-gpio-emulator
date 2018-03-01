@@ -7,8 +7,8 @@ server_rfd, client_wfd = os.pipe()
 
 pid = os.fork()
 
-if pid == 0:
-    # Child process
+if pid != 0:
+    # Parent process (UI client)
     import signal
     from .ui_client import UI
 
@@ -26,7 +26,7 @@ if pid == 0:
 
     signal.signal(signal.SIGINT, interrupt)
 else:
-    # Parent process
+    # Child process (UI server)
     import argparse
     import fcntl
     import importlib
