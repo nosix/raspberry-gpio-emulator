@@ -7,22 +7,6 @@ _logger = logging.getLogger('RPi.UIServer')  # type: logging.Logger
 
 
 class UI:
-    IS_VERTICAL = False
-
-    FONT_SIZE = 12
-    PADDING = 2
-
-    COLOR_DISABLE = 'gray'
-    COLOR_GND = 'black'
-    COLOR_3V3 = 'dark orange'
-    COLOR_5V = 'red'
-
-    # W_TYPE_GPIO >= 0
-    W_TYPE_GND = -1
-    W_TYPE_3V3 = -2
-    W_TYPE_5V = -3
-    W_TYPE_ID_SC = -4
-
     def __init__(self, pipe, frame, plugins):
         # type: (Pipe, Frame) -> None
         self.__pipe = pipe
