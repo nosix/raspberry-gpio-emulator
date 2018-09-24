@@ -5,7 +5,6 @@ from tkinter.font import *
 class Frame:
     IS_VERTICAL = False
 
-    FONT_SIZE = 12
     PADDING = 2
 
     COLOR_DISABLE = 'gray'
@@ -19,11 +18,11 @@ class Frame:
     W_TYPE_5V = -3
     W_TYPE_ID_SC = -4
 
-    def __init__(self):
-        # type: () -> None
+    def __init__(self, font_size=12):
+        # type: (int) -> None
         self.__root = Tk()
         self.__style = {
-            'font': Font(name='TkFixedFont', size=Frame.FONT_SIZE, exists=True, root=self.__root),
+            'font': Font(name='TkFixedFont', size=font_size, exists=True, root=self.__root),
             'width': 6,
             'height': 2
         }
@@ -139,12 +138,12 @@ class Frame:
 
     @staticmethod
     def __set_text(btn, channel, value='-'):
-        # type: (Label, channel, str) -> None
+        # type: (Label, int, str) -> None
         btn['text'] = 'GPIO%02d\n%s' % (channel, value)
 
     @staticmethod
     def __set_state(btn, is_high, change_relief=True):
-        # type: (Label, bool) -> None
+        # type: (Label, bool, bool) -> None
         if is_high:
             btn.configure(fg=Frame.COLOR_3V3)
             if change_relief:
