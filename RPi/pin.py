@@ -34,7 +34,7 @@ class Pin:
             self.__callback(*args, **kwargs)
 
     def __init__(self, channel, mode):
-        # type: (int, int, int) -> None
+        # type: (int, int) -> None
         self.channel = channel
         self.mode = mode  # OUT/IN
         self.is_high = False
