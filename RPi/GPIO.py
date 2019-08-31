@@ -170,8 +170,6 @@ def __setup(channel, state, initial=LOW, pull_up_down=PUD_OFF):
     assert pull_up_down in [PUD_OFF, PUD_UP, PUD_DOWN], 'Pull up/down must be set to PUD_OFF, PUD_UP or PUD_DOWN'
 
     pin = pins.Pin(channel, state)
-    if state == IN:
-        print('set in', channel)
     __pins_dict[channel] = pin
 
     if state == OUT:
