@@ -93,7 +93,7 @@ class Pin:
         for callback in self.__event_callbacks[event]:
             self.__event_detected = True
             if callback is not None:
-                callback(self.channel)
+                callback()
 
     def event_detected(self):
         # type: () -> bool

@@ -170,6 +170,8 @@ def __setup(channel, state, initial=LOW, pull_up_down=PUD_OFF):
     assert pull_up_down in [PUD_OFF, PUD_UP, PUD_DOWN], 'Pull up/down must be set to PUD_OFF, PUD_UP or PUD_DOWN'
 
     pin = pins.Pin(channel, state)
+    if state == IN:
+        print('set in', channel)
     __pins_dict[channel] = pin
 
     if state == OUT:
@@ -287,25 +289,36 @@ def add_event_detect(channel, event, callback=None, bouncetime=None):
     # type: (int, int) -> None
     __check_mode()
 
+    event_callback = __create_event_callback(channel, callback)
+
     channel = __to_channel(channel)
 
     __check_channel(channel)
     __check_event(event)
 
     pin = __pins_dict[channel]
-    pin.add_event_detect(event, callback, bouncetime)
+    pin.add_event_detect(event, event_callback, bouncetime)
 
 
 def add_event_callback(channel, callback, bouncetime=None):
     # type: (int) -> None
     __check_mode()
 
+    event_callback = __create_event_callback(channel, callback)
+
     channel = __to_channel(channel)
 
     __check_channel(channel)
 
     pin = __pins_dict[channel]
-    pin.add_event_detect(None, callback, bouncetime)
+    pin.add_event_detect(None, event_callback, bouncetime)
+
+
+def __create_event_callback(channel, callback):
+    if callback is None:
+        return None
+    else:
+        return lambda: callback(channel)
 
 
 def event_detected(channel):
