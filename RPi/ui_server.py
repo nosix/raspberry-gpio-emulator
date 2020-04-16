@@ -28,7 +28,9 @@ class UI:
     def __handle_buffer(self, buf):
         # type: (bytearray) -> None
         cmd = buf.pop(0)
-        if cmd == Pipe.CMD_CLEANUP:
+        if cmd == Pipe.CMD_EXIT:
+            self.close()
+        elif cmd == Pipe.CMD_CLEANUP:
             channel = buf.pop(0)
             # TODO: if channel can't get, push back to buffer.
             _logger.debug("cleanup(%d)" % channel)

@@ -34,6 +34,10 @@ class UI:
         # type: (int) -> None
         self.__pipe.write_bytes([Pipe.CMD_CLEANUP, channel])
 
+    def close(self):
+        self.interrupt_main_to_close = False
+        self.__pipe.write_bytes([Pipe.CMD_EXIT])
+
     def __update(self):
         buf = bytearray()
         while self.__alive:
