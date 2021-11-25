@@ -165,7 +165,6 @@ def __setup(channel, state, initial=LOW, pull_up_down=PUD_OFF):
     global __pins_dict
 
     assert channel in __GPIO_names, 'GPIO %d does not exist' % channel
-    assert channel not in __pins_dict, 'GPIO is already setup'
     assert state in [OUT, IN], 'State must be set to OUT or IN'
     assert pull_up_down in [PUD_OFF, PUD_UP, PUD_DOWN], 'Pull up/down must be set to PUD_OFF, PUD_UP or PUD_DOWN'
 
