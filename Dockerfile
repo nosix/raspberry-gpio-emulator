@@ -11,7 +11,7 @@ MAINTAINER nosix
 RUN apt-get update
 RUN apt-get -y install python3-pip python3-tk git
 RUN apt-get -y upgrade
-RUN ln -s /usr/bin/pip3 /usr/bin/pip
+#RUN ln -s /usr/bin/pip3 /usr/bin/pip
 RUN ## disable cache
 RUN pip3 install git+https://github.com/nosix/raspberry-gpio-emulator/
 
@@ -23,4 +23,4 @@ RUN mkdir $HOME
 WORKDIR $HOME
 RUN mkdir samples
 COPY samples/*.py samples/
-RUN echo "alias python=python3.6" > .bashrc
+#RUN echo "alias python=python3.6" > .bashrc
