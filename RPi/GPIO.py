@@ -1,5 +1,10 @@
-from collections import Sequence
-
+try:
+    # using Python 3.10+
+    from collections.abc import Sequence
+except ImportError:
+    # using Python 3.10-
+    from collections import Sequence
+    
 from . import __version__
 from . import pin as pins
 from .launcher import ui
